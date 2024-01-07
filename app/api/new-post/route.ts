@@ -16,7 +16,7 @@ export const POST = async (req: Request) => {
 
     await prisma.post.create({
       data: {
-        title: data.title,
+        tags: data.tags,
         body: data.body,
         author: {
           connect: {

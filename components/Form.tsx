@@ -10,7 +10,7 @@ const Form = ({ type }: { type: string }) => {
   const { data: session } = useSession();
   const [submitting, setSubmitting] = useState(false);
   const [post, setPost] = useState({
-    title: "",
+    tags: "",
     body: "",
   });
   const router = useRouter();
@@ -23,11 +23,11 @@ const Form = ({ type }: { type: string }) => {
       await axios.post("/api/new-post", {
         data: {
           email: session?.user?.email,
-          title: post.title,
+          tags: post.tags,
           body: post.body,
         },
       });
-      // router.push("/");
+      router.push("/");
     } catch (error) {
       console.log("[ERROR WHILE MAKING POST REQUEST:]", error);
     } finally {
@@ -42,8 +42,8 @@ const Form = ({ type }: { type: string }) => {
           <span className="blue_gradient">{type}</span> Post
         </h1>
         <p className="desc text-left max-w-md">
-          {type} and share amazing promtps with the world, and let your
-          imagination run wild withany AI-powered platform.
+          {type} and share amazing posts with the world, and let your
+          imagination run wild with any AI-powered platform.
         </p>
 
         <form
@@ -52,26 +52,26 @@ const Form = ({ type }: { type: string }) => {
         >
           <label>
             <span className="font-satoshi font-semibold text-base text-gray-700 ">
-              Your AI Prompt
+              Start your post
             </span>
 
             <textarea
               value={post.body}
               onChange={(e) => setPost({ ...post, body: e.target.value })}
-              placeholder="Write your prompt here..."
+              placeholder="What do you want to talk about?"
               required
               className="form_textarea"
             ></textarea>
           </label>
           <label>
             <span className="font-satoshi font-semibold text-base text-gray-700 ">
-              Title
+              Tags
             </span>
 
             <input
-              value={post.title}
-              onChange={(e) => setPost({ ...post, title: e.target.value })}
-              placeholder="title"
+              value={post.tags}
+              onChange={(e) => setPost({ ...post, tags: e.target.value })}
+              placeholder="#development"
               required
               className="form_input"
             />

@@ -14,7 +14,9 @@ const config: NextAuthConfig = {
       return session;
     },
     async jwt({ token, user, account, profile }) {
-
+      if(account?.provider !== "credentials") {
+        
+      }
       return token;
     }
   },

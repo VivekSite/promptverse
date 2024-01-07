@@ -9,7 +9,7 @@ generator client {
 
 model Post {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  title       String
+  tags       String
   body        String
   authorId    String    @db.ObjectId
   upVotes     Int       @default(0)
