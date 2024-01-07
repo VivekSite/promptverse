@@ -26,10 +26,10 @@ const Nav = () => {
       </Link>
 
       {/*––––––––––––––––––––––– Desktop Navigation –––––––––––––––––––––––*/}
-      <div className="sm:flex hidden">
+      <div className="md:flex hidden">
         {isUserLoggedIn ? (
           <div className="flex gap-3 md:gap-5">
-            <Link href="/create-prompt" className="black_btn">
+            <Link href="/create-post" className="black_btn">
               Create Post
             </Link>
 
@@ -70,14 +70,16 @@ const Nav = () => {
       <div className="md:hidden flex relative">
         {isUserLoggedIn ? (
           <div className="flex">
-            <Image
-              src="/assets/images/logo.svg"
-              alt="profile"
-              width={30}
-              height={30}
-              className="rounded-full"
-              onClick={() => setToggleDropDown((prev) => !prev)}
-            />
+            {session?.user && (
+                <Image
+                  src={`${session.user.image}`}
+                  alt="profile"
+                  width={40}
+                  height={40}
+                  className="rounded-full"
+                  onClick={() => setToggleDropDown((prev) => !prev)}
+                />
+            )}
             {toggleDropDown && (
               <div className="dropdown">
                 <Link
@@ -89,7 +91,7 @@ const Nav = () => {
                 </Link>
 
                 <Link
-                  href="/create-prompt"
+                  href="/create-post"
                   className="dropdown_link"
                   onClick={() => setToggleDropDown(false)}
                 >
