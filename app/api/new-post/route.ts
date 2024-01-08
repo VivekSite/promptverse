@@ -4,15 +4,8 @@ export const POST = async (req: Request) => {
   const { data } = await req.json();
 
   try {
-    const user = await prisma.user.findUnique({
-      where: {
-        email: data.email,
-      },
-    });
-
-    if (!user) {
-      return new Response("User not found", { status: 404 });
-    }
+    const author = await prisma.user.findUnique({where: {email: data.user.email}})
+    if(!author) return new Response("User not found", { status: 404 });
 
     await prisma.post.create({
       data: {
@@ -20,7 +13,7 @@ export const POST = async (req: Request) => {
         body: data.body,
         author: {
           connect: {
-            id: user?.id,
+            id: author.id,
           },
         },
       },

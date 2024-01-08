@@ -1,15 +1,50 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
+import { useSession } from "next-auth/react";
 import Form from "@/components/Form";
-import { auth } from "@/auth";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 
-const CreatePrompt = async () => {
-  const session = await auth();
+const UpdatePost = () => {
+  const [submitting, setSubmitting] = useState(false);
+  const [post, setPost] = useState({
+    tags: "",
+    body: "",
+  });
+  const { data: session } = useSession();
+  const router = useRouter();
 
-  if (!session) {
-    return <div>Access Denied</div>;
-  }
+  const createPost = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
 
-  return <Form type="Create" />;
+    try {
+      await axios.post("/api/new-post", {
+        data: {
+          user: session?.user,
+          tags: post.tags,
+          body: post.body,
+        },
+      });
+
+      router.push("/");
+    } catch (error) {
+      console.log("[ERROR WHILE MAKING POST REQUEST:]", error);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <Form 
+      type="Create" 
+      post={post}
+      setPost={setPost}
+      submitting={submitting}
+      handleSubmit={createPost}
+    />
+  );
 };
 
-export default CreatePrompt;
+export default UpdatePost;

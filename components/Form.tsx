@@ -1,40 +1,20 @@
-"use client";
-
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import axios from "axios";
 
-const Form = ({ type }: { type: string }) => {
-  const { data: session } = useSession();
-  const [submitting, setSubmitting] = useState(false);
-  const [post, setPost] = useState({
-    tags: "",
-    body: "",
-  });
-  const router = useRouter();
+interface FormProps {
+  type: string;
+  post: { tags: string; body: string };
+  setPost: React.Dispatch<
+    React.SetStateAction<{
+      tags: string;
+      body: string;
+    }>
+  >;
+  submitting: boolean;
+  handleSubmit: (e: React.FormEvent) => Promise<void>;
+}
 
-  const createPost = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitting(true);
-
-    try {
-      await axios.post("/api/new-post", {
-        data: {
-          email: session?.user?.email,
-          tags: post.tags,
-          body: post.body,
-        },
-      });
-      router.push("/");
-    } catch (error) {
-      console.log("[ERROR WHILE MAKING POST REQUEST:]", error);
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
+const Form = ({ type, post, setPost, submitting, handleSubmit }: FormProps) => {
   return (
     <>
       <section className="w-full max-w-full flex-start flex-col">
@@ -47,7 +27,7 @@ const Form = ({ type }: { type: string }) => {
         </p>
 
         <form
-          onSubmit={createPost}
+          onSubmit={handleSubmit}
           className="mt-10 w-full max-w-2xl flex flex-col gap-7 glassmorphism"
         >
           <label>
