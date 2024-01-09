@@ -36,10 +36,8 @@ const UpdatePost = () => {
       await axios.patch(
         `/api/posts/${id}`,
         {
-          data: {
-            tags: post.tags,
-            body: post.body,
-          },
+          tags: post.tags,
+          body: post.body,
         },
         {
           headers: { "Content-Type": "application/json" },

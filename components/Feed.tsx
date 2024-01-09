@@ -8,8 +8,8 @@ import { Post } from "@prisma/client";
 const Feed = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [searchText, setSearchText] = useState("");
-  const [searchTimeout, setSearchTimeout] = useState(null);
-  const [searchedResults, setSearchedResults] = useState([]);
+  const [searchedResults, setSearchedResults] = useState<Post[]>([]);
+  const [searchTimeout, setSearchTimeout] = useState<string | number | undefined | NodeJS.Timeout >(undefined);
 
   const fetchPosts = async () => {
     const res = await axios.get("/api/posts");
@@ -20,32 +20,32 @@ const Feed = () => {
     fetchPosts();
   }, []);
   
-  const filterPrompts = () => {
-    // const regex = new RegExp(searchtext, "i"); // 'i' flag for case-insensitive search
-    // return allPosts.filter(
-    //   (item) =>
-    //     regex.test(item.creator.username) ||
-    //     regex.test(item.tag) ||
-    //     regex.test(item.prompt)
-    // );
+  const filterPrompts = (searchtext: string) => {
+    const regex = new RegExp(searchtext, "i"); // 'i' flag for case-insensitive search
+    return posts.filter(
+      (item) =>
+        regex.test(item.authorName) ||
+        regex.test(item.tags) ||
+        regex.test(item.body)
+    );
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // clearTimeout(searchTimeout);
-    // setSearchText(e.target.value);
-    // debounce method
-    // setSearchTimeout(
-    //   setTimeout(() => {
-    //     const searchResult = filterPrompts(e.target.value);
-    //     setSearchedResults(searchResult);
-    //   }, 500)
-    // );
+    clearTimeout(searchTimeout);
+    setSearchText(e.target.value);
+
+    setSearchTimeout(
+      setTimeout(() => {
+        const searchResult = filterPrompts(e.target.value);
+        setSearchedResults(searchResult);
+      }, 500)
+    );
   };
 
-  const handleTagClick = () => {
-    // setSearchText(tagName);
-    // const searchResult = filterPrompts(tagName);
-    // setSearchedResults(searchResult);
+  const handleTagClick = (tagName: string) => {
+    setSearchText(tagName);
+    const searchResult = filterPrompts(tagName);
+    setSearchedResults(searchResult);
   };
 
   return (
@@ -58,20 +58,24 @@ const Feed = () => {
           onChange={handleSearchChange}
           required
           className="search_input peer"
-          // onClick={}
         />
       </form>
 
       {/*--------------------- List of all posts ---------------------*/}
       <div className="mt-16 prompt_layout">
-        {
-          posts.map((post) => (
+        {searchText === "" 
+          ?posts.map((post) => (
             <PostCard 
               key={post.id}
               post={post}
               handleTagClick={handleTagClick}
-              handleEdit={() => {}}
-              handleDelete={() => {}}
+            />
+          ))
+          :searchedResults.map((post) => (
+            <PostCard 
+              key={post.id}
+              post={post}
+              handleTagClick={handleTagClick}
             />
           ))
         }

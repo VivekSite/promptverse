@@ -11,6 +11,7 @@ model Post {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
   tags       String
   body        String
+  authorName  String
   authorId    String    @db.ObjectId
   upVotes     Int       @default(0)
   author      User      @relation(fields: [authorId], references: [id], onDelete: Cascade)

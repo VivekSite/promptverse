@@ -3,12 +3,12 @@ import { NextResponse } from "next/server";
 
 export const GET = async (
   req: Request,
-  { params }: { params: { email: string } }
+  { params }: { params: { id: string } }
 ) => {
   try {
     const userWithPosts = await prisma.user.findUnique({
       where: {
-        email: params.email,
+        id: params.id,
       },
       include:{
         posts: true,
@@ -18,6 +18,6 @@ export const GET = async (
     return NextResponse.json(userWithPosts, { status: 200 });
   } catch (error) {
     console.log("[ERROR FINDING USER'S POSTS]", error);
-    return new Response("[ERROR FINDING USER'S POSTS]", { status: 500 });
+    return new NextResponse("[ERROR FINDING USER'S POSTS]", { status: 500 });
   }
 };

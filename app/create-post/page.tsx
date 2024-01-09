@@ -22,7 +22,8 @@ const UpdatePost = () => {
     try {
       await axios.post("/api/new-post", {
         data: {
-          user: session?.user,
+          authorName: session?.user?.name,
+          userId: session?.user?.id,
           tags: post.tags,
           body: post.body,
         },

@@ -4,7 +4,7 @@ import Provider from "@/components/Provider";
 import { auth } from "@/auth";
 
 export const metadata = {
-  title: "propmtopia",
+  title: "promptopia",
   description: "Discover & shar AI prompts",
 };
 

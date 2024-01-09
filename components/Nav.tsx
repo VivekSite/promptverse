@@ -9,7 +9,7 @@ import { SignIn, SignOut } from "./auth-components";
 
 const Nav = () => {
   const { data: session } = useSession();
-  const isUserLoggedIn = session ? true : false;
+  const isUserLoggedIn = session?.user ? true : false;
   const [toggleDropDown, setToggleDropDown] = useState(false);
 
   return (

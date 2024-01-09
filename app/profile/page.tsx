@@ -2,16 +2,21 @@
 
 import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Post } from "@prisma/client";
 
 import Profile from "@/components/Profile";
 import axios from "axios";
 
 const ProfilePage = () => {
-  const { data: session } = useSession();
   const [posts, setPosts] = useState<Post[]>([]);
+  const { data: session } = useSession();
+  const searchParams = useSearchParams();
   const router = useRouter();
+
+  const id = searchParams.get('id');
+  const name = searchParams.get('name');
+  const isOhterUser = id && name;
 
   const handleEdit = (post: Post) => {
     router.push(`/update-post?id=${post.id}`);
@@ -35,21 +40,22 @@ const ProfilePage = () => {
 
   useEffect(() => {
     const getPosts = async () => {
+
       try {
-        const res = await axios.get(`/api/users/${session?.user?.email}/posts`);
+        const res = await axios.get(`/api/user/${isOhterUser ? id : session?.user?.id}`);
         setPosts(res.data.posts);
       } catch (error) {
         console.log("[ERROR FETCHING USER'S POSTS]");
       }
     };
 
-    if (session?.user?.email) getPosts();
-  }, [session]);
+    if (session?.user?.id) getPosts();
+  }, [id, isOhterUser, session]);
 
   return (
     <Profile
-      name="My"
-      desc="Welcome to your pesonalized profile page"
+      name={isOhterUser ? name as string : "Your"}
+      desc={isOhterUser ? `Welcome to ${name}'s profile`  : `Welcome to your pesonalized profile page`}
       data={posts}
       handleEdit={handleEdit}
       handleDelete={handleDelete}

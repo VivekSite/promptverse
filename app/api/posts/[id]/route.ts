@@ -27,7 +27,7 @@ export const PATCH = async (
   req: NextRequest,
   { params }: { params: { id: string } }
 ) => {
-  const { data } = await req.json();
+  const { body, tags } = await req.json();
 
   try {
     const existingPost = await prisma.post.findUnique({
@@ -44,8 +44,8 @@ export const PATCH = async (
         id: params.id,
       },
       data: {
-        body: data.body,
-        tags: data.tags,
+        body: body,
+        tags: tags,
       },
     });
 

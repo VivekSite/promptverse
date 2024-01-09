@@ -9,14 +9,15 @@ const config: NextAuthConfig = {
     async signIn({ user, account, profile }) {
       return true;
     },
-    async session({ session, token, user}) {
+    async session({ session, token}) {
+      if(session?.user && token.sub) {
+        session.user.id = token.sub;
+      }
 
       return session;
     },
     async jwt({ token, user, account, profile }) {
-      if(account?.provider !== "credentials") {
-        
-      }
+
       return token;
     }
   },
