@@ -43,6 +43,7 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }: FormProps) => {
               className="form_textarea"
             ></textarea>
           </label>
+          
           <label>
             <span className="font-satoshi font-semibold text-base text-gray-700 ">
               Tags

@@ -1,5 +1,5 @@
 import prisma from "@/lib/db";
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { Post } from "@prisma/client";
 
 // get request
@@ -24,10 +24,10 @@ export const GET = async (
 
 // update request
 export const PATCH = async (
-  req: Request,
+  req: NextRequest,
   { params }: { params: { id: string } }
 ) => {
-  const { body, tags } = await req.json();
+  const { data } = await req.json();
 
   try {
     const existingPost = await prisma.post.findUnique({
@@ -44,8 +44,8 @@ export const PATCH = async (
         id: params.id,
       },
       data: {
-        body,
-        tags,
+        body: data.body,
+        tags: data.tags,
       },
     });
 
