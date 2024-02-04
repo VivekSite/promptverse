@@ -2,6 +2,7 @@ import prisma from "@/lib/db";
 import { NextResponse, NextRequest } from "next/server";
 import { Post } from "@prisma/client";
 
+export const dynamic = 'force-dynamic';
 // get request
 export const GET = async (
   req: Request,
