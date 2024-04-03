@@ -1,19 +1,38 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).  
+This is a is inspired by project propmtopia created by [adrianhajdin](https://github.com/adrianhajdin) His YouTube Channel [JavaScript Mastery](https://www.youtube.com/@javascriptmastery).
 
-Website link `https://promptopia-ixpi3jenp-vivek-sahanis-projects.vercel.app/`
+I created this project using NextJs with TypeScript. And instedad of using mongoose for database connection I used Prisma(ORM) just for practicing and learning Prisma. 
+
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).  
+[Visit Website](https://promptopia-psi-umber.vercel.app/)
+
 ## Getting Started
 
-First, run the development server:
+- Install all the dependencies `npm i`
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Add Eviroment Variables
 ```
+NEXTAUTH_SECRET=
+
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+
+# This was inserted by `prisma init`:
+# Environment variables declared in this file are automatically made available to Prisma.
+# See the documentation for more detail: https://pris.ly/d/prisma-schema#accessing-environment-variables-from-the-schema
+
+# Prisma supports the native connection string format for PostgreSQL, MySQL, SQLite, SQL Server, MongoDB and CockroachDB.
+# See the documentation for all the connection string options: https://pris.ly/d/connection-strings
+
+DATABASE_URL=
+NEXTAUTH_URL=
+```
+- for NextAuth Secret add a random generated string
+- For `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` you have to create an application on google console and get ID and SECRET
+- In `DATABASE_URL` add your database connection string
+- In NEXTAUTH_URL add your applications url
+- Initialize prisma `npx prisma init`
+- Generate the schema mentioned in the schema file `npx prisma generate`
+- Now run the development server `npm run dev`
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
